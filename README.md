@@ -10,11 +10,11 @@ Download:
     
 Build the image:
 
-    docker build -t unbekannt3de/haproxy-wi .
+    docker build -t unbekannt3/haproxy-wi-docker .
 
 Run and bind to local port 8080
 
-    docker run -p 8080:80 unbekannt3de/haproxy-wi
+    docker run -p 8080:80 unbekannt3/haproxy-wi-docker
 
 Just knocked together to give HAProxy user interface HAProxy-WI a trial for configuring a DMZ/ingress VM (wi accessed internally via VPN.)
 
