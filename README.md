@@ -6,15 +6,15 @@ Image based from https://github.com/tiangolo/uwsgi-nginx-docker and overrides th
 
 Download:
 
-    git clone https://github.com/addbee/haproxy-wi-docker.git && cd haproxy-wi-docker
+    git clone https://github.com/unbekannt3de/haproxy-wi-docker.git && cd haproxy-wi-docker
     
 Build the image:
 
-    docker build -t addbee/haproxy-wi .
+    docker build -t unbekannt3de/haproxy-wi .
 
 Run and bind to local port 8080
 
-    docker run -p 8080:80 addbee/haproxy-wi
+    docker run -p 8080:80 unbekannt3de/haproxy-wi
 
 Just knocked together to give HAProxy user interface HAProxy-WI a trial for configuring a DMZ/ingress VM (wi accessed internally via VPN.)
 
