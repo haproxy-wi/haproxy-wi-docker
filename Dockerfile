@@ -7,15 +7,31 @@ RUN apt-get update && \
 
 WORKDIR /var/www/haproxy-wi/
 
-RUN git clone https://github.com/Aidaho12/haproxy-wi.git . && \
-	ls -la && \
-	pip3 install -r requirements.txt && \
-	chmod +x /var/www/haproxy-wi/app/tools/*.py && chmod +x /var/www/haproxy-wi/app/*.py && mkdir /var/www/haproxy-wi/keys /var/www/haproxy-wi/configs /var/www/haproxy-wi/configs/hap_config/ /var/www/haproxy-wi/configs/kp_config/ /var/www/haproxy-wi/log/ && \
-	/var/www/haproxy-wi/app/create_db.py
+RUN git clone https://github.com/Aidaho12/haproxy-wi.git .
+
+RUN chown -R nginx:nginx /var/www/haproxy-wi
+
+RUN pip3 install -r requirements.txt
+
+RUN chmod +x /var/www/haproxy-wi/app/*.py 
+RUN cp haproxy-wi/config_other/logrotate/* /etc/logrotate.d/
+RUN cp haproxy-wi/config_other/syslog/* /etc/rsyslog.d/
+RUN systemctl daemon-reload && systemctl restart rsyslog
+
+RUN mkdir /var/www/haproxy-wi/app/certs /var/www/haproxy-wi/keys /var/www/haproxy-wi/configs/ /var/www/haproxy-wi/configs/hap_config/ /var/www/haproxy-wi/configs/kp_config/ /var/www/haproxy-wi/configs/nginx_config/ /var/www/haproxy-wi/log/
+
+WORKDIR /var/www/haproxy-wi/app
+
+RUN create_db.py
+
+#RUN chmod +x /var/www/haproxy-wi/app/tools/*.py && chmod +x /var/www/haproxy-wi/app/*.py && mkdir /var/www/haproxy-wi/keys /var/www/haproxy-wi/configs /var/www/haproxy-wi/configs/hap_config/ /var/www/haproxy-wi/configs/kp_config/ /var/www/haproxy-wi/log/ && \
+#	/var/www/haproxy-wi/app/create_db.py
 
 COPY supervisord.conf /etc/supervisor/conf.d/additional.conf
 COPY nginx.conf /app/nginx.conf
 COPY uwsgi.ini /var/www/haproxy-wi/uwsgi.ini
+
 RUN chown -R nginx:nginx /var/www/haproxy-wi
+
 WORKDIR /var/www/haproxy-wi/
 
