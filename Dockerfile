@@ -1,4 +1,4 @@
-FROM tiangolo/uwsgi-nginx:python3.7
+FROM tiangolo/uwsgi-nginx:python3.8
 
 ENV UWSGI_INI /var/www/haproxy-wi/uwsgi.ini
 
@@ -7,10 +7,10 @@ RUN apt-get update && \
 
 WORKDIR /var/www/haproxy-wi/
 
-RUN git clone https://github.com/Aidaho12/haproxy-wi.git /var/www/haproxy-wi && \
-	 ls -la && \
-	 pip3 install -r requirements.txt && \
-	 chmod +x /var/www/haproxy-wi/app/tools/*.py && chmod +x /var/www/haproxy-wi/app/*.py && mkdir /var/www/haproxy-wi/keys /var/www/haproxy-wi/configs /var/www/haproxy-wi/configs/hap_config/ /var/www/haproxy-wi/configs/kp_config/ /var/www/haproxy-wi/log/ && \
+RUN git clone https://github.com/Aidaho12/haproxy-wi.git . && \
+	ls -la && \
+	pip3 install -r requirements.txt && \
+	chmod +x /var/www/haproxy-wi/app/tools/*.py && chmod +x /var/www/haproxy-wi/app/*.py && mkdir /var/www/haproxy-wi/keys /var/www/haproxy-wi/configs /var/www/haproxy-wi/configs/hap_config/ /var/www/haproxy-wi/configs/kp_config/ /var/www/haproxy-wi/log/ && \
 	/var/www/haproxy-wi/app/create_db.py
 
 COPY supervisord.conf /etc/supervisor/conf.d/additional.conf
